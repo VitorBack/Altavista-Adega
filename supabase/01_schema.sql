@@ -163,3 +163,39 @@ grant execute on function public.registrar_pedido(uuid, text, text, text, text, 
 
 notify pgrst, 'reload schema';
 commit;
+
+
+
+BEGIN;
+
+CREATE TABLE public.perfis (
+  usuario_id uuid PRIMARY KEY DEFAULT auth.uid()
+    REFERENCES auth.users (id) ON DELETE CASCADE,
+  nome_usuario text NOT NULL UNIQUE
+    CHECK (nome_usuario ~ '^[a-z0-9_]{3,30}$'),
+  data_nascimento date NOT NULL,
+  criado_em timestamptz NOT NULL DEFAULT now(),
+  CONSTRAINT perfis_data_nascimento_valida CHECK (
+    isfinite(data_nascimento)
+    AND data_nascimento <= (criado_em AT TIME ZONE 'America/Fortaleza')::date
+  )
+);
+
+ALTER TABLE public.perfis ENABLE ROW LEVEL SECURITY;
+
+REVOKE ALL ON TABLE public.perfis
+FROM PUBLIC, anon, authenticated, service_role;
+
+GRANT SELECT ON TABLE public.perfis TO authenticated;
+GRANT INSERT (nome_usuario, data_nascimento)
+ON TABLE public.perfis TO authenticated;
+
+CREATE POLICY perfis_ler_proprio
+ON public.perfis FOR SELECT TO authenticated
+USING (usuario_id = (SELECT auth.uid()));
+
+CREATE POLICY perfis_criar_proprio
+ON public.perfis FOR INSERT TO authenticated
+WITH CHECK (usuario_id = (SELECT auth.uid()));
+
+COMMIT;

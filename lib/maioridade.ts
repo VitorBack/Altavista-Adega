@@ -4,6 +4,14 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 export const COOKIE_MAIORIDADE = "altavista_18";
 export const DURACAO_COOKIE = 60 * 60 * 12;
 
+export const opcoesCookieMaioridade = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+  maxAge: DURACAO_COOKIE,
+} as const;
+
 const dataLocal = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/Fortaleza", year: "numeric", month: "2-digit", day: "2-digit",
 });

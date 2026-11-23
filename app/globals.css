@@ -52,6 +52,11 @@ svg { flex-shrink: 0; }
 .busca:focus-within { border-color: #ae7529; }
 .busca input { flex: 1; min-width: 0; height: 42px; padding: 0; border: 0; outline: none; background: none; color: var(--texto); font-size: .88rem; }
 .busca .botao { min-height: 42px; border-radius: 0 5px 5px 0; margin: -1px; padding-inline: 21px; }
+.cabecalho-controles { justify-self: end; display: flex; align-items: center; gap: clamp(8px, 1.6vw, 22px); }
+.conta-link { min-height: 42px; display: inline-flex; align-items: center; gap: 6px; color: var(--vinho); font-size: .86rem; font-weight: 750; }
+.conta-link svg { flex: none; }
+.conta-link span { max-width: 105px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conta-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .carrinho-botao { justify-self: end; display: inline-flex; align-items: center; gap: 10px; border: 0; padding: 8px 0 8px 8px; color: var(--vinho); background: transparent; font-size: .86rem; font-weight: 750; }
 .carrinho-icone { position: relative; display: inline-grid; place-items: center; width: 34px; height: 34px; }
 .contagem { position: absolute; top: -3px; left: 22px; min-width: 17px; height: 17px; padding-inline: 4px; background: var(--vinho); border: 1px solid white; border-radius: 30px; color: white; font-size: .63rem; line-height: 15px; text-align: center; }
@@ -131,10 +136,15 @@ svg { flex-shrink: 0; }
 .entrada-form form { display: grid; gap: 16px; margin-top: 25px; }
 .entrada-form legend, .campos-entrega legend { margin-bottom: 10px; padding: 0; font-size: .85rem; font-weight: 800; }
 .data-campos { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 10px; }
-.data-campos label, .campos-entrega label, .frete label { display: block; font-size: .79rem; font-weight: 750; }
-.data-campos input, .campos-entrega input, .frete select { width: 100%; height: 44px; margin-top: 5px; padding: 8px 11px; border: 1px solid #d9cfc6; border-radius: 5px; background: var(--branco); color: var(--texto); font-size: .9rem; }
+.data-campos label, .campos-conta label, .campos-entrega label, .frete label { display: block; font-size: .79rem; font-weight: 750; }
+.data-campos input, .campos-conta input, .campos-entrega input, .frete select { width: 100%; height: 44px; margin-top: 5px; padding: 8px 11px; border: 1px solid #d9cfc6; border-radius: 5px; background: var(--branco); color: var(--texto); font-size: .9rem; }
 .entrada-form .botao { justify-content: space-between; min-height: 47px; }
 .entrada-form .nota-privacidade { display: flex; align-items: center; gap: 7px; font-size: .75rem; }
+.entrada-link { margin-top: 14px; }
+.campos-conta { display: grid; gap: 14px; }
+.campos-conta small { display: block; margin-top: 4px; color: var(--suave); font-weight: 500; }
+.conta-email { overflow-wrap: anywhere; }
+.conta-troca .link-botao { margin-inline-start: 4px; }
 .nota-privacidade svg { color: var(--vinho); }
 .entrada-foto { min-height: 100%; background: #280e13 url("/imagens/adega.jpg") 69% center / cover no-repeat; }
 .entrada-rodape { color: var(--suave); font-size: .72rem; }
@@ -206,6 +216,7 @@ svg { flex-shrink: 0; }
   .marca-texto small { font-size: .46rem; }
   .busca { grid-area: 2 / 1 / 3 / 3; }
   .carrinho-texto { display: none; }
+  .conta-link span { max-width: 74px; }
   .navegacao-linha { width: 100%; padding-inline: 18px; min-height: 46px; gap: 12px; }
   .navegacao button { min-height: 44px; }
   .heroi { min-height: 393px; }

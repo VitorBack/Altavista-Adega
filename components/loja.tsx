@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowDown, ArrowRight, Beer, BottleWine, CupSoda, Droplet, Grid2X2, MapPin, PackageCheck, Plus, Search, ShoppingBag, Tags, Truck, Wine, X, Zap } from "lucide-react";
+import { ArrowDown, ArrowRight, Beer, BottleWine, CupSoda, Droplet, Grid2X2, MapPin, PackageCheck, Plus, Search, ShoppingBag, Tags, Truck, UserRound, Wine, X, Zap } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { categorias, MAX_ITENS, MAX_UNIDADES, reais, textoDeBusca, type Bairro, type Categoria, type Produto } from "@/lib/catalogo";
 import { Carrinho } from "./carrinho";
@@ -47,7 +48,9 @@ function CardProduto({ produto, quantidade, adicionar, cheio, destacarOferta }: 
   );
 }
 
-export function Loja({ produtos, bairros, indisponivel }: { produtos: Produto[]; bairros: Bairro[]; indisponivel: boolean }) {
+export function Loja({ produtos, bairros, indisponivel, rotuloConta }: {
+  produtos: Produto[]; bairros: Bairro[]; indisponivel: boolean; rotuloConta: string | null;
+}) {
   const router = useRouter();
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [catalogoAberto, setCatalogoAberto] = useState(false);
@@ -169,11 +172,19 @@ export function Loja({ produtos, bairros, indisponivel }: { produtos: Produto[];
               value={campoBusca} maxLength={120} onChange={(evento) => setCampoBusca(evento.target.value)} />
             <button className="botao primario" type="submit">Buscar</button>
           </form>
-          <button type="button" className="carrinho-botao" onClick={() => setPainelAberto(true)}
-            aria-label={`Abrir carrinho, ${unidades} ${unidades === 1 ? "unidade" : "unidades"}`}>
-            <span className="carrinho-icone"><ShoppingBag size={22} aria-hidden="true" /><span className="contagem">{unidades}</span></span>
-            <span className="carrinho-texto">Carrinho</span>
-          </button>
+          <div className="cabecalho-controles">
+            {rotuloConta && (
+              <Link className="conta-link" href="/conta" prefetch={false}>
+                <UserRound size={19} aria-hidden="true" />
+                <span>{rotuloConta}</span>
+              </Link>
+            )}
+            <button type="button" className="carrinho-botao" onClick={() => setPainelAberto(true)}
+              aria-label={`Abrir carrinho, ${unidades} ${unidades === 1 ? "unidade" : "unidades"}`}>
+              <span className="carrinho-icone"><ShoppingBag size={22} aria-hidden="true" /><span className="contagem">{unidades}</span></span>
+              <span className="carrinho-texto">Carrinho</span>
+            </button>
+          </div>
         </div>
         <nav className="navegacao" aria-label="Categorias de bebidas">
           <div className="limite navegacao-linha">

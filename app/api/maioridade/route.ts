@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { COOKIE_MAIORIDADE, DURACAO_COOKIE, emitirComprovante, verificarNascimento } from "@/lib/maioridade";
+import { COOKIE_MAIORIDADE, emitirComprovante, opcoesCookieMaioridade, verificarNascimento } from "@/lib/maioridade";
 
 export const runtime = "nodejs";
 
@@ -24,12 +24,6 @@ export async function POST(request: NextRequest) {
   }
 
   const resposta = NextResponse.json({ confirmado: true });
-  resposta.cookies.set(COOKIE_MAIORIDADE, comprovante, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: DURACAO_COOKIE,
-  });
+  resposta.cookies.set(COOKIE_MAIORIDADE, comprovante, opcoesCookieMaioridade);
   return resposta;
 }

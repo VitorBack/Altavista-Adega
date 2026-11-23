@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Loja } from "@/components/loja";
 import { Entrada } from "@/components/entrada";
+import { MenuConta } from "@/components/menu-conta";
 import { COOKIE_MAIORIDADE, comprovanteValido } from "@/lib/maioridade";
 import { carregarLoja } from "@/lib/supabase";
 import { carregarConta, supabaseSessao } from "@/lib/supabase-auth";
@@ -22,6 +23,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
     carregarLoja().catch(() => null),
     supabase ? carregarConta(supabase).catch(() => null) : null,
   ]);
-  const rotuloConta = supabase ? conta?.perfil?.nome_usuario ?? (conta ? "Minha conta" : "Entrar") : null;
-  return <Loja produtos={dados?.produtos ?? []} bairros={dados?.bairros ?? []} indisponivel={!dados} rotuloConta={rotuloConta} />;
+  const nomeConta = conta ? conta.perfil?.nome_usuario ?? "Minha conta" : null;
+  return <Loja produtos={dados?.produtos ?? []} bairros={dados?.bairros ?? []} indisponivel={!dados}
+    acessoConta={supabase && <MenuConta nome={nomeConta} />} />;
 }

@@ -17,13 +17,20 @@ export default async function Conta({ searchParams }: {
   if (conta) {
     return (
       <TelaEntrada>
-        <h1>{conta.perfil || conta.erroPerfil ? "Minha conta" : "Complete seu cadastro"}</h1>
-        {conta.email && <p className="conta-email">{conta.email}</p>}
+        <h1>{conta.perfil || conta.erroPerfil ? "Meu perfil" : "Complete seu cadastro"}</h1>
+        {!conta.perfil && conta.email && <p className="conta-email">{conta.email}</p>}
         {conta.erroPerfil ? (
           <p className="aviso erro" role="alert">Não foi possível carregar seu perfil. Atualize a página para tentar novamente.</p>
         ) : conta.perfil ? (
           <>
-            <p>Olá, <strong>{conta.perfil.nome_usuario}</strong>.</p>
+            <dl className="dados-perfil">
+              {conta.email && <div><dt>E-mail</dt><dd>{conta.email}</dd></div>}
+              <div>
+                <dt>Data de nascimento</dt>
+                <dd><time dateTime={conta.perfil.data_nascimento}>{conta.perfil.data_nascimento.split("-").reverse().join("/")}</time></dd>
+              </div>
+            </dl>
+            <FormularioConta modo="editar" nomeInicial={conta.perfil.nome_usuario} />
             <BotaoConta acao="abrirLoja" />
           </>
         ) : (

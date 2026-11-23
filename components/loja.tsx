@@ -1,8 +1,7 @@
 "use client";
 
-import { ArrowDown, ArrowRight, Beer, BottleWine, CupSoda, Droplet, Grid2X2, MapPin, PackageCheck, Plus, Search, ShoppingBag, Tags, Truck, UserRound, Wine, X, Zap } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
-import Link from "next/link";
+import { ArrowDown, ArrowRight, Beer, BottleWine, CupSoda, Droplet, Grid2X2, MapPin, PackageCheck, Plus, Search, ShoppingBag, Tags, Truck, Wine, X, Zap } from "lucide-react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { categorias, MAX_ITENS, MAX_UNIDADES, reais, textoDeBusca, type Bairro, type Categoria, type Produto } from "@/lib/catalogo";
 import { Carrinho } from "./carrinho";
@@ -48,8 +47,8 @@ function CardProduto({ produto, quantidade, adicionar, cheio, destacarOferta }: 
   );
 }
 
-export function Loja({ produtos, bairros, indisponivel, rotuloConta }: {
-  produtos: Produto[]; bairros: Bairro[]; indisponivel: boolean; rotuloConta: string | null;
+export function Loja({ produtos, bairros, indisponivel, acessoConta }: {
+  produtos: Produto[]; bairros: Bairro[]; indisponivel: boolean; acessoConta: ReactNode;
 }) {
   const router = useRouter();
   const [filtro, setFiltro] = useState<Filtro>("todos");
@@ -173,12 +172,7 @@ export function Loja({ produtos, bairros, indisponivel, rotuloConta }: {
             <button className="botao primario" type="submit">Buscar</button>
           </form>
           <div className="cabecalho-controles">
-            {rotuloConta && (
-              <Link className="conta-link" href="/conta" prefetch={false}>
-                <UserRound size={19} aria-hidden="true" />
-                <span>{rotuloConta}</span>
-              </Link>
-            )}
+            {acessoConta}
             <button type="button" className="carrinho-botao" onClick={() => setPainelAberto(true)}
               aria-label={`Abrir carrinho, ${unidades} ${unidades === 1 ? "unidade" : "unidades"}`}>
               <span className="carrinho-icone"><ShoppingBag size={22} aria-hidden="true" /><span className="contagem">{unidades}</span></span>

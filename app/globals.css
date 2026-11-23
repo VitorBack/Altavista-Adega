@@ -57,6 +57,15 @@ svg { flex-shrink: 0; }
 .conta-link svg { flex: none; }
 .conta-link span { max-width: 105px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .conta-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+button.conta-link { background: transparent; padding: 0; border: 0; }
+.menu-conta { width: min(340px, calc(100% - 36px)); padding: 0; border: 1px solid var(--linha); border-radius: 10px; background: var(--branco); color: var(--texto); box-shadow: 0 16px 56px #270a1733; }
+.menu-conta::backdrop { background: #24131b99; }
+body:has(.menu-conta[open]) { overflow: hidden; }
+.menu-conta-corpo { display: grid; gap: 12px; padding: 22px; }
+.menu-conta-topo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.menu-conta-topo h2 { font: 600 1.65rem/1.2 var(--serif); }
+.menu-conta .botao { text-decoration: none; }
+.menu-conta .link-botao { width: 100%; min-height: 42px; justify-content: center; }
 .carrinho-botao { justify-self: end; display: inline-flex; align-items: center; gap: 10px; border: 0; padding: 8px 0 8px 8px; color: var(--vinho); background: transparent; font-size: .86rem; font-weight: 750; }
 .carrinho-icone { position: relative; display: inline-grid; place-items: center; width: 34px; height: 34px; }
 .contagem { position: absolute; top: -3px; left: 22px; min-width: 17px; height: 17px; padding-inline: 4px; background: var(--vinho); border: 1px solid white; border-radius: 30px; color: white; font-size: .63rem; line-height: 15px; text-align: center; }
@@ -144,6 +153,9 @@ svg { flex-shrink: 0; }
 .campos-conta { display: grid; gap: 14px; }
 .campos-conta small { display: block; margin-top: 4px; color: var(--suave); font-weight: 500; }
 .conta-email { overflow-wrap: anywhere; }
+.dados-perfil { display: grid; gap: 14px; margin-top: 22px; padding-block: 16px; border-block: 1px solid var(--linha); }
+.dados-perfil dt { margin-bottom: 3px; color: var(--suave); font-size: .8rem; }
+.dados-perfil dd { overflow-wrap: anywhere; }
 .conta-troca .link-botao { margin-inline-start: 4px; }
 .nota-privacidade svg { color: var(--vinho); }
 .entrada-foto { min-height: 100%; background: #280e13 url("/imagens/adega.jpg") 69% center / cover no-repeat; }

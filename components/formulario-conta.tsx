@@ -2,12 +2,13 @@
 
 import { ArrowRight, LogOut } from "lucide-react";
 import { useActionState, useState } from "react";
-import { abrirLoja, cadastrar, completarPerfil, entrar, sair, type EstadoConta } from "@/app/conta/actions";
+import { abrirLoja, cadastrar, completarPerfil, editarNomeUsuario, entrar, sair, type EstadoConta } from "@/app/conta/actions";
 
 const formularios = {
   entrar: { acao: entrar, texto: "Entrar" },
   cadastrar: { acao: cadastrar, texto: "Criar conta" },
   perfil: { acao: completarPerfil, texto: "Salvar e entrar na loja" },
+  editar: { acao: editarNomeUsuario, texto: "Salvar nome de usuário" },
 };
 
 function MensagemConta({ erro, aviso }: EstadoConta) {
@@ -16,31 +17,31 @@ function MensagemConta({ erro, aviso }: EstadoConta) {
   return null;
 }
 
-export function FormularioConta({ modo }: { modo: keyof typeof formularios }) {
+export function FormularioConta({ modo, nomeInicial = "" }: { modo: keyof typeof formularios; nomeInicial?: string }) {
   const { acao, texto } = formularios[modo];
   const [estado, executar, pendente] = useActionState(acao, {});
   const [email, setEmail] = useState("");
-  const [nome, setNome] = useState("");
+  const [nome, setNome] = useState(nomeInicial);
   const [nascimento, setNascimento] = useState("");
 
   return (
     <form action={executar}>
       <fieldset className="campos-conta" disabled={pendente}>
-        {modo === "perfil" ? <>
+        {modo === "perfil" || modo === "editar" ? <>
           <div>
             <label>
               Nome de usuário
               <input name="nome_usuario" autoComplete="username" autoCapitalize="none" spellCheck={false}
                 minLength={3} maxLength={30} pattern="[A-Za-z0-9_]{3,30}" aria-describedby="nome-usuario-ajuda"
-                value={nome} onChange={(evento) => setNome(evento.target.value)} required />
+                value={nome} onChange={(evento) => setNome(evento.target.value.toLowerCase())} required />
             </label>
             <small id="nome-usuario-ajuda">De 3 a 30 letras, números ou sublinhados.</small>
           </div>
-          <label>
+          {modo === "perfil" && <label>
             Data de nascimento
             <input name="data_nascimento" type="date" autoComplete="bday" min="1900-01-01"
               value={nascimento} onChange={(evento) => setNascimento(evento.target.value)} required />
-          </label>
+          </label>}
         </> : <>
           <label>
             E-mail
@@ -58,8 +59,8 @@ export function FormularioConta({ modo }: { modo: keyof typeof formularios }) {
           </div>
         </>}
       </fieldset>
-      <MensagemConta {...estado} />
-      <button type="submit" className="botao primario" disabled={pendente}>
+      <MensagemConta erro={estado.erro} aviso={modo === "editar" && nome !== nomeInicial ? undefined : estado.aviso} />
+      <button type="submit" className="botao primario" disabled={pendente || (modo === "editar" && nome === nomeInicial)}>
         {pendente ? "Aguarde…" : texto}<ArrowRight size={17} aria-hidden="true" />
       </button>
     </form>
@@ -75,7 +76,7 @@ export function BotaoConta({ acao }: { acao: "abrirLoja" | "sair" }) {
     <form action={executar}>
       <MensagemConta {...estado} />
       <button type="submit" className={voltando ? "botao primario" : "link-botao"} disabled={pendente}>
-        {pendente ? "Aguarde…" : voltando ? "Ir para a loja" : "Sair da conta"}
+        {pendente ? "Aguarde…" : voltando ? "Ir para a loja" : "Sair"}
         <Icone size={17} aria-hidden="true" />
       </button>
     </form>

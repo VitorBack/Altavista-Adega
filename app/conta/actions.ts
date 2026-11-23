@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies, headers } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { COOKIE_MAIORIDADE, emitirComprovante, opcoesCookieMaioridade, verificarNascimento } from "@/lib/maioridade";
@@ -114,6 +115,26 @@ export async function abrirLoja(): Promise<EstadoConta> {
   if (error) return indisponivel;
   if (!perfil) redirect("/conta");
   return autorizarLoja(perfil.data_nascimento);
+}
+
+export async function editarNomeUsuario(_estado: EstadoConta, formulario: FormData): Promise<EstadoConta> {
+  const nome = nomeUsuarioSchema.safeParse(formulario.get("nome_usuario"));
+  if (!nome.success) return { erro: "Use de 3 a 30 letras, números ou sublinhados no nome de usuário." };
+
+  const supabase = await supabaseSessao(true);
+  if (!supabase) return indisponivel;
+  const { data } = await supabase.auth.getClaims();
+  if (!data?.claims.sub) redirect("/conta");
+
+  const { data: perfil, error } = await supabase.from("perfis")
+    .update({ nome_usuario: nome.data }).eq("usuario_id", data.claims.sub)
+    .select("nome_usuario").maybeSingle();
+  if (error?.code === "23505") return { erro: "Esse nome de usuário já está em uso. Escolha outro." };
+  if (error || !perfil) return { erro: "Não foi possível atualizar seu nome de usuário. Tente novamente." };
+
+  revalidatePath("/conta");
+  revalidatePath("/");
+  return { aviso: "Nome de usuário atualizado." };
 }
 
 export async function sair(): Promise<EstadoConta> {

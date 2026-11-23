@@ -3,6 +3,7 @@ import { z } from "zod";
 import { MAX_ITENS, MAX_UNIDADES, type PedidoConfirmado } from "@/lib/catalogo";
 import { COOKIE_MAIORIDADE, comprovanteValido } from "@/lib/maioridade";
 import { supabaseServidor } from "@/lib/supabase";
+import { supabaseSessao } from "@/lib/supabase-auth";
 
 export const runtime = "nodejs";
 
@@ -48,8 +49,15 @@ export async function POST(request: NextRequest) {
 
   const pedido = resultado.data;
   try {
+    const sessao = await supabaseSessao(true);
+    const identidade = await sessao?.auth.getClaims();
+    if (identidade?.error) {
+      return NextResponse.json({ mensagem: "Não foi possível verificar sua sessão. Atualize a página e tente novamente." }, { status: 503 });
+    }
+
     const { data, error } = await supabaseServidor().rpc("registrar_pedido", {
       p_requisicao: pedido.requisicao,
+      p_usuario_id: identidade?.data?.claims.sub ?? null,
       p_nome: pedido.nome,
       p_telefone: pedido.telefone,
       p_logradouro: pedido.logradouro,

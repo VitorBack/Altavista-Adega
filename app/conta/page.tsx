@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BotaoConta, FormularioConta } from "@/components/formulario-conta";
+import { HistoricoCompras } from "@/components/historico-compras";
 import { TelaEntrada } from "@/components/tela-entrada";
 import { carregarConta, supabaseSessao } from "@/lib/supabase-auth";
 
@@ -7,14 +8,14 @@ export const metadata = { title: "Minha conta | Altavista" };
 export const dynamic = "force-dynamic";
 
 export default async function Conta({ searchParams }: {
-  searchParams: Promise<{ modo?: string; erro?: string }>;
+  searchParams: Promise<{ modo?: string; erro?: string; antes?: string | string[] }>;
 }) {
   const parametros = await searchParams;
   const supabase = await supabaseSessao();
   const conta = supabase ? await carregarConta(supabase) : null;
   const cadastro = parametros.modo === "cadastro";
 
-  if (conta) {
+  if (conta && supabase) {
     return (
       <TelaEntrada>
         <h1>{conta.perfil || conta.erroPerfil ? "Meu perfil" : "Complete seu cadastro"}</h1>
@@ -31,6 +32,7 @@ export default async function Conta({ searchParams }: {
               </div>
             </dl>
             <FormularioConta modo="editar" nomeInicial={conta.perfil.nome_usuario} />
+            <HistoricoCompras supabase={supabase} antes={parametros.antes} />
             <BotaoConta acao="abrirLoja" />
           </>
         ) : (

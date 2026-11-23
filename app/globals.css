@@ -156,6 +156,19 @@ body:has(.menu-conta[open]) { overflow: hidden; }
 .dados-perfil { display: grid; gap: 14px; margin-top: 22px; padding-block: 16px; border-block: 1px solid var(--linha); }
 .dados-perfil dt { margin-bottom: 3px; color: var(--suave); font-size: .8rem; }
 .dados-perfil dd { overflow-wrap: anywhere; }
+.historico-compras { display: grid; gap: 14px; min-width: 0; margin-top: 32px; }
+.historico-compras h2 { font: 600 1.65rem/1.2 var(--serif); }
+.historico-compras > p { color: var(--suave); font-size: .9rem; }
+.lista-compras, .compra-itens { list-style: none; padding-inline-start: 0; }
+.lista-compras > li { border-bottom: 1px solid var(--linha); }
+.lista-compras summary { padding-block: 12px; cursor: pointer; color: var(--vinho); }
+.compra-cabecalho { display: inline-grid; width: calc(100% - 1.5em); grid-template-columns: 1fr auto; gap: 4px 10px; vertical-align: top; }
+.compra-cabecalho time { grid-column: 1 / -1; color: var(--suave); font-size: .8rem; }
+.compra-itens, .compra-valores { display: grid; gap: 6px; padding-bottom: 12px; font-size: .86rem; }
+.compra-itens li, .compra-valores div, .compras-navegacao { display: flex; justify-content: space-between; gap: 12px; }
+.compra-itens li span:first-child { overflow-wrap: anywhere; }
+.compra-itens li span:last-child, .compra-valores dd { white-space: nowrap; }
+.compras-navegacao { flex-wrap: wrap; }
 .conta-troca .link-botao { margin-inline-start: 4px; }
 .nota-privacidade svg { color: var(--vinho); }
 .entrada-foto { min-height: 100%; background: #280e13 url("/imagens/adega.jpg") 69% center / cover no-repeat; }

@@ -40,7 +40,7 @@ svg { flex-shrink: 0; }
 .icone-botao:hover:not(:disabled) { background: #f4ebe7; }
 
 .marca { display: inline-flex; align-items: center; gap: 12px; color: var(--vinho); text-align: left; white-space: nowrap; }
-.marca-selo { display: inline-grid; place-items: center; width: 49px; aspect-ratio: 1; border: 1px solid #c8a360; border-radius: 50%; font-family: var(--serif); font-size: 1.1rem; letter-spacing: -.07em; }
+.marca-selo { flex: none; height: auto; }
 .marca-texto { display: grid; gap: 3px; font: 600 1.38rem/1 var(--serif); text-transform: uppercase; letter-spacing: .09em; }
 .marca-texto small { font: 650 .53rem/1.35 "DM Sans Variable", sans-serif; letter-spacing: .2em; color: var(--suave); }
 .marca-botao { display: flex; padding: 0; border: 0; background: transparent; }
@@ -235,7 +235,7 @@ body:has(.menu-conta[open]) { overflow: hidden; }
 @media (max-width: 720px) {
   .limite { width: calc(100% - 36px); }
   .cabecalho-linha { grid-template-columns: 1fr auto; gap: 14px 10px; padding-block: 13px 12px; }
-  .marca-selo { width: 38px; font-size: .92rem; }
+  .marca-selo { width: 38px; }
   .marca { gap: 9px; }
   .marca-texto { font-size: 1.08rem; }
   .marca-texto small { font-size: .46rem; }
